@@ -1,0 +1,37 @@
+public class App {
+	public static void main(String[] args) {
+
+		int numberRange = 100000; //sets the number range to scan for primes
+
+		boolean[] prime = new boolean[numberRange + 1];
+
+		for (int x = 2; x <= numberRange; x++) //find all the primes with Sieve of Eratosthenes
+			prime[x] = true;
+
+		for (int x = 2; x * x <= numberRange; x++) {
+			if (prime[x]) {
+				for (int y = x; x * y <= numberRange; y++)
+					prime[x * y] = false;
+			}
+		}
+
+		int gap = 0;
+		int largestGap = 0;
+		int right = 0;
+
+		for (int i = 2; i <= numberRange; i++) { //scans though values and finds largest gap between primes and number range
+			if (prime[i]) //if number is prime then set gap to 0
+				gap = 0;
+			else
+				gap++; //otherwise add one to gap count
+			if (gap > largestGap) { //if the gap being created exceeds the previous largestGap
+				largestGap = gap; //then replace largestGap with the new gap
+				right = i; //and set the value at which the gap is increasing i to the RHS of the range
+			}
+		}
+
+		int left = right - largestGap + 1; //calculate the LHS of the range by subtracting the gap from the RHS value and adding 1
+		System.out.println("There are no primes between " + left + " and " + right + " including those numbers.");
+		System.out.println("Therefore the largest gap in the range is " + largestGap + " consecutive integers");
+	}
+}
